@@ -293,13 +293,13 @@ class MVP(ConflictResolution):
         # Write velocities as vectors and find relative velocity vector
         v1 = np.array([ownship.gseast[idx1], ownship.gsnorth[idx1], ownship.vs[idx1]])
         v2 = np.array([intruder.gseast[idx2], intruder.gsnorth[idx2], intruder.vs[idx2]])
-        vrel = np.array(v2-v1)
+        vrel = np.array(v2-v1) # -(v1-v2)
 
 
         # Horizontal resolution----------------------------------------------------
 
         # Find horizontal distance at the tcpa (min horizontal distance)
-        # t_cpa*v_rel - x_rel. Distance between CPA and intruder.
+        # d_cpa = x_rel - t_cpa*v_rel. Distance between CPA and ownship.
         dcpa  = drel + vrel*tcpa
         dabsH = np.sqrt(dcpa[0]*dcpa[0]+dcpa[1]*dcpa[1])
 
@@ -323,6 +323,8 @@ class MVP(ConflictResolution):
             dv1 = (((conf.rpz * self.resofach)/erratum - dabsH)*dcpa[0])/(abs(tcpa)*dabsH)
             dv2 = (((conf.rpz * self.resofach)/erratum - dabsH)*dcpa[1])/(abs(tcpa)*dabsH)
         else:
+            # dcpa/dasbH is the unit vector of dcpa.
+            # We need to make iH have its direction then calculate dv of the velocity of x and y.
             dv1 = (iH * dcpa[0]) / (abs(tcpa) * dabsH)
             dv2 = (iH * dcpa[1]) / (abs(tcpa) * dabsH)
 
