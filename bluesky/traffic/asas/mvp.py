@@ -285,6 +285,7 @@ class MVP(ConflictResolution):
         qdr = np.radians(qdr)
 
         # Relative position vector between id1 and id2
+        # alt: desired altitude [m]
         drel = np.array([np.sin(qdr)*dist, \
                         np.cos(qdr)*dist, \
                         intruder.alt[idx2]-ownship.alt[idx1]])
@@ -298,10 +299,12 @@ class MVP(ConflictResolution):
         # Horizontal resolution----------------------------------------------------
 
         # Find horizontal distance at the tcpa (min horizontal distance)
+        # t_cpa*v_rel - x_rel. Distance between CPA and intruder.
         dcpa  = drel + vrel*tcpa
         dabsH = np.sqrt(dcpa[0]*dcpa[0]+dcpa[1]*dcpa[1])
 
         # Compute horizontal intrusion
+        # self.resofach is horizontal resolution factor
         iH = (conf.rpz * self.resofach) - dabsH
 
         # Exception handlers for head-on conflicts
