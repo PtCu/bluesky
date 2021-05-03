@@ -1,5 +1,4 @@
-# CR Methods Explanation
-
+# REPORT
 [toc]
 
 ## 前置知识
@@ -32,13 +31,20 @@ CPA: Closet point of approach，可由几何方法得出，令相对速度方向
 
     ![](img/bluesky_setup.png)
 
-### 场景文件
+#### 场景文件
 
 - 其中以.scn结尾的为场景文件，其实就是一个记录了bluesky的命令的文本文件。bluesky会按顺序读取这个文件的命令并依次执行。demo中的这些命令大多是在某时刻某位置产生什么飞机，具体的bluesky的命令见doc文件夹下的手册。
 - 我将论文中所用的场景文件放在了scenario文件夹中。
 - （最新版本的bluesky将自带的demo快删完了，也许是终于发现自己给的大多demo跑不了）
 
-### 模拟过程
+#### 选择算法
+
+- 输入命令RESO即可查看当前使用的CR算法
+- ![](img/bluesky_reso.png)
+- 输入`RESO [method_name]`即可设置当前CR算法
+- ![](img/bluesky_cr.png)
+  
+#### 模拟过程
 
 - 打开对应的场景文件即可运行。
 
@@ -47,9 +53,10 @@ CPA: Closet point of approach，可由几何方法得出，令相对速度方向
 - 可以根据下方选项进行调整。
     ![](img/bluesky_run.png)
 
-### 记录结果
 
-#### 如何记录
+#### 记录结果
+
+##### 如何记录
 
 - 踩了无数的坑才发现，若想自动记录结果，需要规定实验区域(experiment area)。只有在实验区域的飞机才会被记录。
 - 规定好实验区后运行scn文件即可自动进行记录。
@@ -59,7 +66,7 @@ CPA: Closet point of approach，可由几何方法得出，令相对速度方向
     ![](img/bluesky_demo.png)
 - 我找的论文中的场景文件并没有规定实验区域，如果要用那个scn的话需要自己手动添加
 
-#### 所记录的内容
+##### 所记录的内容
 
 - 内容存放在.log文件中，位于out文件夹下
 - 所记录的内容为某时刻有多少飞机如何碰撞
@@ -92,4 +99,17 @@ $$
     其中第一种情况的所需偏移量displacement如下：
     ![](img/MVP2.png)
 
+
+## Solution Space
+
+- 二维下，飞机的速度取值可以构成一个圆，最小速度和最大速度形成一对同心圆，合法的速度在这两个同心圆之间。
+- 同时，计算出将会发生碰撞的速度的取值，如图中的三角形区域。
+- 减去图中三角形区域，即为所有合法的速度取值。
+- 选取最终的解时，按照“最近原则”选取。即在边界上的值。
+![](img/ssd1.png)
+
+## Explicit Coordination
+
+
+变量在traffic中的aporasas.py, traffic.py
 
